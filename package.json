@@ -4,8 +4,14 @@
   "description": "Capture Claude Code Anthropic Messages API debug artifacts locally.",
   "type": "module",
   "bin": {
-    "claude-fetch": "./dist/src/cli.js"
+    "claude-fetch": "dist/src/cli.js"
   },
+  "files": [
+    "dist/src",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
