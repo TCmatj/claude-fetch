@@ -1,0 +1,41 @@
+const lines = [
+  '[log_real] sending request {',
+  '  method: "post",',
+  '  url: "https://newapi.matc2025.click/v1/messages?beta=true",',
+  '  options: {',
+  '    method: "post",',
+  '    path: "/v1/messages?beta=true",',
+  '    body: {',
+  '      model: "gpt-5.5(medium)",',
+  '      messages: [',
+  '        [Object ...]',
+  '      ],',
+  '      max_tokens: 32000,',
+  '      stream: true,',
+  '    },',
+  '    timeout: 600000,',
+  '    stream: true,',
+  '  },',
+  '  headers: {',
+  '    accept: "application/json",',
+  '    authorization: "***",',
+  '    "content-type": "application/json",',
+  '    "x-claude-code-session-id": "session-real",',
+  '  },',
+  '}',
+  '[log_real] post https://newapi.matc2025.click/v1/messages?beta=true succeeded with status 200 in 3448ms',
+  '[log_real] response start {',
+  '  url: "https://newapi.matc2025.click/v1/messages?beta=true",',
+  '  status: 200,',
+  '  headers: {',
+  '    "content-type": "text/event-stream",',
+  '    "x-oneapi-request-id": "202604280356141242618298268d9d64t5Vrks4",',
+  '  },',
+  '  durationMs: 3448,',
+  '}',
+  '在。有什么要做？'
+];
+
+for (const line of lines) {
+  console.error(line);
+}

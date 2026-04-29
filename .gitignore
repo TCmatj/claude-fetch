@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+claude-fetch-output/
+tmp-captures/
+tmp-real-captures/
+tmp-otel-real-captures/
+tmp-otel-test/
+.DS_Store
+.claude/
+docs/
