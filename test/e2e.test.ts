@@ -135,6 +135,7 @@ describe('claude-fetch e2e', () => {
       const html = await readFile(path.join(captureDir, htmlFile!), 'utf8');
       expect(html).toContain('replace(/\\[(\\d+)\\]/g');
       expect(html).toContain('User Prompts');
+      expect(html).toContain("role: '+esc(role)");
       expect(html).toContain('System Prompt');
       expect(html).toContain('Tools');
       expect(html).toContain('Model / Thinking / Output');

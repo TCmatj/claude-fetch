@@ -1,6 +1,6 @@
 {
   "name": "@matijun/claude-fetch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Capture Claude Code Anthropic Messages API debug artifacts locally.",
   "type": "module",
   "bin": {

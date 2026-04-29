@@ -14,7 +14,7 @@ function renderIndexHtml(manifest: Manifest): string {
   const success = manifest.items.filter((item) => item.status && item.status >= 200 && item.status < 400).length;
   const failed = manifest.items.filter((item) => item.status && item.status >= 400).length;
   const avg = total ? Math.round(manifest.items.reduce((sum, item) => sum + (item.durationMs ?? 0), 0) / total) : 0;
-  const latest = manifest.items.at(-1)?.htmlPath ?? '';
+  const latest = manifest.items.slice().sort((a, b) => Date.parse(b.time) - Date.parse(a.time))[0]?.htmlPath ?? '';
   return `<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -33,12 +33,12 @@ function renderIndexHtml(manifest: Manifest): string {
 <main class="main"><div class="toolbar"><strong id="title">${escapeHtml(latest || '暂无请求')}</strong></div>${latest ? `<iframe id="frame" src="${escapeHtml(latest)}"></iframe>` : '<div class="empty">暂无捕获记录</div>'}</main>
 <script id="manifest" type="application/json">${safeJsonScript(manifest)}</script>
 <script>
-const manifest=JSON.parse(document.getElementById('manifest').textContent);let selected=manifest.items.at(-1)?.id;
+const manifest=JSON.parse(document.getElementById('manifest').textContent);const sortedItems=manifest.items.slice().sort((a,b)=>Date.parse(b.time)-Date.parse(a.time));let selected=sortedItems[0]?.id;
 function cls(s){return s>=500?'bad':s>=400?'bad':'ok'}
-function render(){const q=document.getElementById('q').value.toLowerCase();const st=document.getElementById('status').value;const list=document.getElementById('list');list.innerHTML='';manifest.items.slice().reverse().filter(i=>{const text=[i.path,i.requestId,i.model,i.htmlPath,i.jsonPath].join(' ').toLowerCase();const sm=!st||String(i.status||'').startsWith(st);return text.includes(q)&&sm}).forEach(i=>{const el=document.createElement('div');el.className='item '+(selected===i.id?'active':'');el.onclick=()=>select(i);const name=(i.htmlPath||i.jsonPath||i.id).split('/').at(-1);el.innerHTML='<div class="row"><b>'+esc(i.method+' '+(i.status||''))+'</b><span class="badge '+cls(i.status)+'">'+(i.durationMs||'-')+'ms</span></div><div class="path">'+esc(i.path)+'</div><div class="meta">'+esc(i.model||'unknown')+'</div><div class="meta">'+esc(name)+'</div>';list.appendChild(el)})}
+function render(){const q=document.getElementById('q').value.toLowerCase();const st=document.getElementById('status').value;const list=document.getElementById('list');list.innerHTML='';sortedItems.filter(i=>{const text=[i.path,i.requestId,i.model,i.htmlPath,i.jsonPath].join(' ').toLowerCase();const sm=!st||String(i.status||'').startsWith(st);return text.includes(q)&&sm}).forEach(i=>{const el=document.createElement('div');el.className='item '+(selected===i.id?'active':'');el.onclick=()=>select(i);const name=(i.htmlPath||i.jsonPath||i.id).split('/').at(-1);el.innerHTML='<div class="row"><b>'+esc(i.method+' '+(i.status||''))+'</b><span class="badge '+cls(i.status)+'">'+(i.durationMs||'-')+'ms</span></div><div class="path">'+esc(i.path)+'</div><div class="meta">'+esc(i.model||'unknown')+'</div><div class="meta">'+esc(name)+'</div>';list.appendChild(el)})}
 function select(i){selected=i.id;document.getElementById('frame').src=i.htmlPath;document.getElementById('title').textContent=i.htmlPath;render()}
 function esc(s){return String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;')}
-document.getElementById('q').addEventListener('input',render);document.getElementById('status').addEventListener('change',render);render();if(manifest.items.length)select(manifest.items.at(-1));
+document.getElementById('q').addEventListener('input',render);document.getElementById('status').addEventListener('change',render);render();if(sortedItems.length)select(sortedItems[0]);
 </script>
 </body>
 </html>`;
